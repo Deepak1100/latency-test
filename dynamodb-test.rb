@@ -3,12 +3,20 @@ require 'time'
 dynamodb = Aws::DynamoDB::Client.new()
 id = 0
 opt_times = []
+
+def gen_random(lenght=50)
+  o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+  string = (0...lenght).map { o[rand(o.length)] }.join
+  return string
+end
+
 while id < 100
   begin
   start_time = Time.now
   resp = dynamodb.put_item({
     item: {
       "id": "id-#{id}",
+      "test": gen_random(100)
     },
     return_consumed_capacity: "TOTAL",
     table_name: "latency-test",
