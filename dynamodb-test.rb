@@ -24,16 +24,16 @@ while true
     table_name: "latency-test",
   })
   end_time = Time.now
-  opt_times << end_time - start_time
-  puts "writing id-#{id}"
+  opt_times <<  end_time - start_time
   rescue StandardError => msg
     puts msg
   end
   id += 1
-  if id ==300
+  if id == 300
     puts "last 300 opt time: #{opt_times}"
     puts "max: #{opt_times.max}, min: #{opt_times.min}, avg: #{opt_times.sum / opt_times.length}"
     id = 0 
     opt_times = []
   end
+  sleep(0.1)
 end
