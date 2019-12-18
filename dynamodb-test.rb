@@ -1,6 +1,13 @@
 require "aws-sdk-dynamodb"
+require "aws-sdk-dax"
 require 'time'
-dynamodb = Aws::DynamoDB::Client.new()
+dax = Aws::DAX::Client.new()
+
+if ENV["DAX_ENDPOINT"].nil?
+  dynamodb = Aws::DynamoDB::Client.new()
+else
+  dynamodb = Aws::DynamoDB::Client.new(options={:endpoint => ENV["DAX_ENDPOINT"] })
+end
 id = 0
 opt_times = []
 
@@ -29,9 +36,9 @@ while true
     puts msg
   end
   id += 1
-  if id == 300
-    puts "last 300 opt time: #{opt_times}"
-    puts "max: #{opt_times.max}, min: #{opt_times.min}, avg: #{opt_times.sum / opt_times.length}"
+  if id == 10
+    puts "#{Time.now}: last 300 opt time: #{opt_times}"
+    puts "#{Time.now}: max: #{opt_times.max}, min: #{opt_times.min}, avg: #{opt_times.sum / opt_times.length}"
     id = 0 
     opt_times = []
   end
